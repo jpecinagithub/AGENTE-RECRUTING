@@ -1,11 +1,13 @@
 import { Messages } from '../db/models.js'
 import { buildSystemPrompt } from '../agent/prompts.js'
 import { loadUserContext } from './memory-manager.js'
+import { readMemoryFile } from './file-memory.js'
 
 export async function buildMessages(userId, conversationId, newUserMessage) {
   const { preferences, memory, recentJobs } = await loadUserContext(userId)
+  const fileMemory = readMemoryFile(userId)
 
-  const systemPrompt = buildSystemPrompt(memory, preferences, recentJobs)
+  const systemPrompt = buildSystemPrompt(memory, preferences, recentJobs, fileMemory)
 
   const history = await Messages.getByConversation(conversationId, 20)
   const historyMessages = history.map(m => ({

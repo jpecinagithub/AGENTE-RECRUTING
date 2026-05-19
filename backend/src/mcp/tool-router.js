@@ -3,6 +3,12 @@ import { updatePreferences } from '../agent/tools/update_preferences.js'
 import { saveJob } from '../agent/tools/save_job.js'
 import { addJobPortal } from '../agent/tools/add_job_portal.js'
 import { generateDailyReport } from '../agent/tools/generate_daily_report.js'
+import { writeMemorySection } from './file-memory.js'
+
+async function updateMemory(args, userId) {
+  writeMemorySection(userId, args.section, args.content)
+  return { saved: true, section: args.section }
+}
 
 const TOOLS = {
   search_jobs: searchJobs,
@@ -10,6 +16,7 @@ const TOOLS = {
   save_job: saveJob,
   add_job_portal: addJobPortal,
   generate_daily_report: generateDailyReport,
+  update_memory: updateMemory,
 }
 
 export async function executeTool(toolName, args, userId) {

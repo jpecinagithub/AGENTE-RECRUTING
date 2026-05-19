@@ -27,4 +27,10 @@ export const deletePortal = (id) => api.delete(`/portals/${id}`)
 export const getPreferences = () => api.get('/preferences')
 export const updatePreferences = (data) => api.post('/preferences', data)
 
+export const uploadPdf = (file) => {
+  const form = new FormData()
+  form.append('file', file)
+  return api.post('/chat/upload-pdf', form, { headers: { 'Content-Type': 'multipart/form-data' } })
+}
+
 export default api

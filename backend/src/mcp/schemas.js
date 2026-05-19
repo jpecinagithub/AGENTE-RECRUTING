@@ -91,4 +91,25 @@ export const TOOL_SCHEMAS = [
       },
     },
   },
+  {
+    type: 'function',
+    function: {
+      name: 'update_memory',
+      description: 'Save important user requirements, CV data, or profile information to persistent memory so it is available in future conversations',
+      parameters: {
+        type: 'object',
+        properties: {
+          section: {
+            type: 'string',
+            description: 'Memory section name (e.g. "Requirements", "CV", "Experience", "Skills", "Preferences")',
+          },
+          content: {
+            type: 'string',
+            description: 'Markdown content to store in this section. Use bullet points for lists.',
+          },
+        },
+        required: ['section', 'content'],
+      },
+    },
+  },
 ]

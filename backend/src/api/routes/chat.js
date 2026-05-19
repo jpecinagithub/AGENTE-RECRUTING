@@ -2,8 +2,11 @@ import { Router } from 'express'
 import { requireAuth } from '../middleware/auth.js'
 import { runAgent } from '../../agent/core.js'
 import { Conversations, Messages } from '../../db/models.js'
+import multer from 'multer'
+import pdfParse from 'pdf-parse/lib/pdf-parse.js'
 
 const router = Router()
+const upload = multer({ storage: multer.memoryStorage(), limits: { fileSize: 20 * 1024 * 1024 } })
 
 router.use(requireAuth)
 
@@ -39,6 +42,17 @@ router.post('/message', async (req, res) => {
     res.json({ ...result, conversation_id: convId })
   } catch (err) {
     res.status(500).json({ error: err.message })
+  }
+})
+
+router.post('/upload-pdf', upload.single('file'), async (req, res) => {
+  if (!req.file) return res.status(400).json({ error: 'No file provided' })
+  try {
+    const data = await pdfParse(req.file.buffer)
+    const text = data.text.replace(/\s+/g, ' ').trim()
+    res.json({ text, pages: data.numpages, filename: req.file.originalname })
+  } catch (err) {
+    res.status(500).json({ error: 'Could not parse PDF: ' + err.message })
   }
 })
 
