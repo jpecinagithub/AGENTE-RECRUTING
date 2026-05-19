@@ -23,6 +23,7 @@ export const feedbackJob = (id, feedback) => api.post(`/jobs/${id}/feedback`, { 
 export const getPortals = () => api.get('/portals')
 export const addPortal = (data) => api.post('/portals', data)
 export const deletePortal = (id) => api.delete(`/portals/${id}`)
+export const seedPortals = () => api.post('/portals/seed')
 
 export const getPreferences = () => api.get('/preferences')
 export const updatePreferences = (data) => api.post('/preferences', data)

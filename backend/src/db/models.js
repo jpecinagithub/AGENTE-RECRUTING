@@ -125,6 +125,13 @@ export const JobListings = {
       `SELECT * FROM job_listings WHERE user_id = ? AND DATE(found_at) = CURDATE() ORDER BY relevance_score DESC`,
       [userId]
     ),
+  getFeedback: (userId) =>
+    query(
+      `SELECT title, company, feedback FROM job_listings
+       WHERE user_id = ? AND feedback IN ('positive','negative')
+       ORDER BY found_at DESC LIMIT 30`,
+      [userId]
+    ),
 }
 
 // ─── Daily Reports ────────────────────────────────────────────────────────────
