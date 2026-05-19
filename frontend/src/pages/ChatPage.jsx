@@ -4,13 +4,15 @@ import ChatWindow from '../components/Chat/ChatWindow.jsx'
 import JobFeedPanel from '../components/JobFeed/JobFeedPanel.jsx'
 import PreferencesPanel from '../components/Settings/PreferencesPanel.jsx'
 import PortalsPanel from '../components/Settings/PortalsPanel.jsx'
+import ReportsPanel from '../components/Reports/ReportsPanel.jsx'
 import { runDailyReport } from '../api/api.js'
 
 const PANELS = [
   { id: 'chat', label: '💬', title: 'Chat' },
-  { id: 'jobs', label: '📋', title: 'Jobs' },
-  { id: 'prefs', label: '⚙️', title: 'Preferences' },
-  { id: 'portals', label: '🌐', title: 'Portals' },
+  { id: 'jobs', label: '📋', title: 'Empleos' },
+  { id: 'reports', label: '📊', title: 'Reportes' },
+  { id: 'prefs', label: '⚙️', title: 'Preferencias' },
+  { id: 'portals', label: '🌐', title: 'Portales' },
 ]
 
 export default function ChatPage() {
@@ -68,17 +70,7 @@ export default function ChatPage() {
         <div className={`flex-1 flex flex-col ${activePanel !== 'chat' ? 'hidden' : ''}`}>
           <div className="px-4 py-3 border-b border-border flex items-center justify-between">
             <h1 className="font-semibold text-white text-sm">Recruiting Agent</h1>
-            <div className="flex items-center gap-3">
-              <button
-                onClick={handleRunReport}
-                disabled={reporting}
-                title="Generar reporte de empleo ahora"
-                className="text-xs text-muted hover:text-white border border-border hover:border-accent/50 rounded-lg px-2 py-1 transition-colors disabled:opacity-40"
-              >
-                {reporting ? '⏳ Buscando...' : '📋 Reporte'}
-              </button>
-              <span className="text-xs text-muted">{user?.name || user?.email}</span>
-            </div>
+            <span className="text-xs text-muted">{user?.name || user?.email}</span>
           </div>
           <div className="flex-1 overflow-hidden">
             <ChatWindow />
@@ -89,6 +81,7 @@ export default function ChatPage() {
         {activePanel !== 'chat' && (
           <div className="flex-1 overflow-hidden border-l border-border">
             {activePanel === 'jobs' && <JobFeedPanel />}
+            {activePanel === 'reports' && <ReportsPanel />}
             {activePanel === 'prefs' && <PreferencesPanel />}
             {activePanel === 'portals' && <PortalsPanel />}
           </div>

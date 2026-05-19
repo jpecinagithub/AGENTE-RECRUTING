@@ -35,4 +35,6 @@ export const uploadPdf = (file) => {
 
 export const runDailyReport = () => api.post('/chat/run-daily-report')
 
+export const getReports = () => api.get('/reports')
+
 export default api

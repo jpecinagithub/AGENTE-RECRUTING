@@ -127,6 +127,18 @@ export const JobListings = {
     ),
 }
 
+// ─── Daily Reports ────────────────────────────────────────────────────────────
+export const DailyReports = {
+  getByUser: (userId) =>
+    query(
+      `SELECT id, content, metadata, created_at
+       FROM messages
+       WHERE user_id = ? AND JSON_EXTRACT(metadata, '$.type') = 'daily_report'
+       ORDER BY created_at DESC`,
+      [userId]
+    ),
+}
+
 // ─── Agent Memory ─────────────────────────────────────────────────────────────
 export const AgentMemory = {
   getByUser: (userId, type = null) => {

@@ -15,6 +15,7 @@ import chatRouter from './api/routes/chat.js'
 import jobsRouter from './api/routes/jobs.js'
 import portalsRouter from './api/routes/portals.js'
 import preferencesRouter from './api/routes/preferences.js'
+import reportsRouter from './api/routes/reports.js'
 
 import { runAgentStream } from './agent/core.js'
 import { Conversations } from './db/models.js'
@@ -33,6 +34,7 @@ app.use('/api/chat', chatRouter)
 app.use('/api/jobs', jobsRouter)
 app.use('/api/portals', portalsRouter)
 app.use('/api/preferences', preferencesRouter)
+app.use('/api/reports', reportsRouter)
 
 // Serve built frontend
 const FRONTEND_DIST = join(__dirname, '../../frontend/dist')
