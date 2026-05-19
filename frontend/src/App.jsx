@@ -10,8 +10,9 @@ function PrivateRoute({ children }) {
 }
 
 export default function App() {
+  const basename = import.meta.env.PROD ? '/recruiting' : '/'
   return (
-    <BrowserRouter>
+    <BrowserRouter basename={basename}>
       <Routes>
         <Route path="/login" element={<LoginPage />} />
         <Route path="/" element={<PrivateRoute><ChatPage /></PrivateRoute>} />

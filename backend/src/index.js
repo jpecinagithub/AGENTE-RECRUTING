@@ -4,6 +4,11 @@ import cors from 'cors'
 import { WebSocketServer } from 'ws'
 import { createServer } from 'http'
 import jwt from 'jsonwebtoken'
+import { fileURLToPath } from 'url'
+import { dirname, join } from 'path'
+import { existsSync } from 'fs'
+
+const __dirname = dirname(fileURLToPath(import.meta.url))
 
 import authRouter from './api/routes/auth.js'
 import chatRouter from './api/routes/chat.js'
@@ -28,6 +33,13 @@ app.use('/api/chat', chatRouter)
 app.use('/api/jobs', jobsRouter)
 app.use('/api/portals', portalsRouter)
 app.use('/api/preferences', preferencesRouter)
+
+// Serve built frontend
+const FRONTEND_DIST = join(__dirname, '../../frontend/dist')
+if (existsSync(FRONTEND_DIST)) {
+  app.use(express.static(FRONTEND_DIST))
+  app.get(/^(?!\/api).*$/, (_, res) => res.sendFile(join(FRONTEND_DIST, 'index.html')))
+}
 
 app.get('/api/health', (_, res) => res.json({
   status: 'ok',
