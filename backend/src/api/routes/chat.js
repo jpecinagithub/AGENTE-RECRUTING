@@ -2,6 +2,7 @@ import { Router } from 'express'
 import { requireAuth } from '../middleware/auth.js'
 import { runAgent } from '../../agent/core.js'
 import { Conversations, Messages } from '../../db/models.js'
+import { generateDailyReport } from '../../agent/tools/generate_daily_report.js'
 import multer from 'multer'
 import { PDFParse } from 'pdf-parse'
 
@@ -40,6 +41,23 @@ router.post('/message', async (req, res) => {
   try {
     const result = await runAgent(req.user.id, convId, message)
     res.json({ ...result, conversation_id: convId })
+  } catch (err) {
+    res.status(500).json({ error: err.message })
+  }
+})
+
+// Manual trigger for daily report (for testing)
+router.post('/run-daily-report', async (req, res) => {
+  try {
+    const report = await generateDailyReport({}, req.user.id)
+    if (report.message) {
+      const convs = await Conversations.getByUser(req.user.id)
+      const convId = convs[0]?.id || await Conversations.create(req.user.id, 'Reporte Diario')
+      await Messages.create(convId, req.user.id, 'assistant', report.message, {
+        type: 'daily_report', date: report.report_date, total: report.total_found || 0,
+      })
+    }
+    res.json({ success: true, total_found: report.total_found || 0, message: report.message })
   } catch (err) {
     res.status(500).json({ error: err.message })
   }

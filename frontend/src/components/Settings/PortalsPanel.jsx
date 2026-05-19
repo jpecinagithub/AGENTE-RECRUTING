@@ -24,7 +24,7 @@ export default function PortalsPanel() {
         setError(res.data.message)
       }
     } catch (err) {
-      setError(err.response?.data?.error || 'Error adding portal')
+      setError(err.response?.data?.message || err.response?.data?.error || 'Error adding portal')
     } finally {
       setAdding(false)
     }

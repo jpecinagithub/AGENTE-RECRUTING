@@ -33,4 +33,6 @@ export const uploadPdf = (file) => {
   return api.post('/chat/upload-pdf', form, { headers: { 'Content-Type': 'multipart/form-data' } })
 }
 
+export const runDailyReport = () => api.post('/chat/run-daily-report')
+
 export default api
